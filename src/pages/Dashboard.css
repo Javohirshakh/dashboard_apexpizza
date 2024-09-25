@@ -1,0 +1,76 @@
+.dashboard-container {
+    padding: 20px;
+    background-color: #f0f4ff;
+  }
+  
+  .dashboard-title {
+    color: #161a2d;
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  /* KPI Карточки */
+  .kpi-cards {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+  
+  .kpi-card {
+    background-color: #4f52ba;
+    color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 15%;
+    text-align: center;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .kpi-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .kpi-card h2 {
+    font-size: 2rem;
+    margin: 0;
+  }
+  
+  .kpi-card p {
+    margin-top: 10px;
+    font-size: 1.1rem;
+    color: #dfe3ef;
+  }
+  
+  /* Используем Grid для размещения графиков */
+  .grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 20px;
+    grid-template-areas: 
+      "top-left large-chart"
+      "bottom-left large-chart";
+  }
+  
+  .grid-item {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .grid-item.large-chart {
+    grid-area: large-chart;
+  }
+  
+  .grid-item canvas {
+    margin: 0 auto;
+    width: 100% !important;
+    height: auto !important;
+  }
+  
