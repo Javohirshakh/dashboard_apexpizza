@@ -4,7 +4,6 @@ import './App.css';
 import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard';
 import Analytics from './pages/Analytics';
-// import Analitika from './pages/Analitika';
 
 const App = () => {
   return (
@@ -15,8 +14,6 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Dashboard />} />
              <Route path="/analytics" element={<Analytics />} />
-            {/*<Route path="/analitika" element={<Analitika />} /> */}
-            {/* Добавьте другие страницы */}
           </Routes>
         </div>
       </div>
