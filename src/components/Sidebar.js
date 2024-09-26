@@ -116,7 +116,7 @@ const Sidebar = () => {
       </ul>
       <div className="user-account">
         <div className="user-profile">
-          <img src="/images/profile-img.jpg" alt="Mohigul K" />
+          <img src="/images/profile-img.png" alt="Mohigul K" />
           <div className="user-detail">
             <h3>Mohigul K</h3>
             <span>Project Manager</span>

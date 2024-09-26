@@ -1,9 +1,9 @@
 import React from 'react';
-import { Bar, Pie } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement } from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import './Analytics.css';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const Analytics = () => {
   // Мок данные для сводки KPI
@@ -12,62 +12,49 @@ const Analytics = () => {
   const averageCheck = 45;
   const returningCustomers = 3200;
 
-  // Мок данные для графика динамики заказов
-  const ordersData = {
-    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+  // Мок данные для статистики блогеров
+  const bloggersData = {
+    labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7', 'Day 8', 'Day 9', 'Day 10'],
     datasets: [
       {
-        label: 'Orders',
-        data: [2000, 2500, 2200, 2700, 2900, 3000, 3200],
+        label: 'Tashkent',
+        data: [300, 400, 350, 380, 410, 420, 390, 400, 450, 480],
         backgroundColor: 'rgba(75, 192, 192, 0.6)',
       },
-    ],
-  };
-
-  const ordersOptions = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: 'Orders Dynamics (Last 7 Days)',
-      },
-    },
-  };
-
-  // Мок данные для круговой диаграммы (источники заказов)
-  const sourcesData = {
-    labels: ['Website', 'Mobile App', 'Call Center', 'Branches'],
-    datasets: [
       {
-        label: 'Orders by Source',
-        data: [5000, 4000, 2000, 3500],
-        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+        label: 'Andijan',
+        data: [200, 250, 230, 270, 290, 280, 300, 320, 340, 360],
+        backgroundColor: 'rgba(153, 102, 255, 0.6)',
+      },
+      {
+        label: 'Samarkand',
+        data: [150, 180, 160, 170, 190, 200, 220, 230, 250, 270],
+        backgroundColor: 'rgba(255, 159, 64, 0.6)',
       },
     ],
   };
 
-  const sourcesOptions = {
+  const bloggersOptions = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: 'top',
       },
       title: {
         display: true,
-        text: 'Orders by Source',
+        text: 'Blogger Statistics for the Last 10 Days',
       },
     },
   };
 
   // Мок данные для таблицы по филиалам
   const branchesData = [
-    { name: 'Branch 1', orders: 5000, revenue: 45000 },
-    { name: 'Branch 2', orders: 4000, revenue: 32000 },
-    { name: 'Branch 3', orders: 3000, revenue: 25000 },
-    { name: 'Branch 4', orders: 2000, revenue: 18000 },
+    { name: 'Telegram', orders: "70% / 300 ta", revenue: "30% / 100 ta" },
+    { name: 'App', orders: "70% / 300 ta", revenue: "30% / 100 ta" },
+    { name: 'Web site', orders: "70% / 300 ta", revenue: "30% / 100 ta" },
+    { name: 'Call center', orders: "70% / 300 ta", revenue: "30% / 100 ta" },
+    { name: 'Filiallar', orders: "70% / 300 ta", revenue: "30% / 100 ta" },
   ];
 
   return (
@@ -94,25 +81,20 @@ const Analytics = () => {
         </div>
       </div>
 
-      {/* Графики */}
-      <div className="charts-row">
-        <div className="chart-container">
-          <Bar data={ordersData} options={ordersOptions} />
-        </div>
-        <div className="chart-container">
-          <Pie data={sourcesData} options={sourcesOptions} />
-        </div>
+      {/* График блогеров на всю ширину */}
+      <div className="chart-container full-width">
+        <Bar data={bloggersData} options={bloggersOptions} />
       </div>
 
       {/* Таблица с филиалами */}
       <div className="branches-table">
-        <h3>Branch Performance</h3>
+        <h3>Mijoz sodiqligi</h3>
         <table>
           <thead>
             <tr>
-              <th>Branch</th>
-              <th>Orders</th>
-              <th>Revenue</th>
+              <th>Manba</th>
+              <th>Yangi mijoz</th>
+              <th>Eski mijoz</th>
             </tr>
           </thead>
           <tbody>
@@ -120,7 +102,7 @@ const Analytics = () => {
               <tr key={index}>
                 <td>{branch.name}</td>
                 <td>{branch.orders}</td>
-                <td>${branch.revenue}</td>
+                <td>{branch.revenue}</td>
               </tr>
             ))}
           </tbody>

@@ -46,26 +46,23 @@
     color: #dfe3ef;
   }
   
-  /* Графики */
-  .charts-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 40px;
-  }
-  
-  .chart-container {
+  /* График на всю ширину */
+  .chart-container.full-width {
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
-    width: 48%;
+    width: 100%;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
   }
   
+  /* Ограничиваем высоту графика */
   .chart-container canvas {
     margin: 0 auto;
     width: 100% !important;
-    height: auto !important;
+    height: 300px !important; /* Задаем фиксированную высоту */
   }
+  
   
   /* Таблица */
   .branches-table {
