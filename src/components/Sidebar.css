@@ -116,6 +116,11 @@ body {
   background: #fff;
   border-radius: 4px;
 }
+.sidebar-links li a.active-link {
+  color: #161a2d;
+  background: #fff;
+  border-radius: 4px;
+}
 
 .user-account {
   margin-top: auto;

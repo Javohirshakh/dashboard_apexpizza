@@ -15,7 +15,7 @@
     display: flex;
     justify-content: space-around;
     margin-bottom: 40px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap!important;
   }
   
   .kpi-card {
@@ -28,6 +28,7 @@
     margin-bottom: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin: 0 10px;
   }
   
   .kpi-card:hover {
@@ -56,21 +57,28 @@
       "top-left large-chart"
       "bottom-left large-chart";
   }
-  
+  .grid-item canvas {
+    max-height: 250px;
+  }
+  .grid-item.large-chart canvas{
+    max-height: 560px!important;
+  }
   .grid-item {
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    min-height: 240px; /* Уменьшаем высоту для столбчатых диаграмм */
   }
   
   .grid-item.large-chart {
     grid-area: large-chart;
+    min-height: 500px; /* Оставляем высоту для круговой диаграммы */
   }
   
   .grid-item canvas {
     margin: 0 auto;
     width: 100% !important;
-    height: auto !important;
+    /* height: 100% !important; Адаптивная высота графиков */
   }
   
