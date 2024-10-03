@@ -1,11 +1,30 @@
-
-
-import React from "react";
-import { Link, useLocation } from "react-router-dom"; // Подключаем useLocation
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Sidebar.css";
 
 const Sidebar = () => {
-  const location = useLocation(); // Получаем текущий путь
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const [user, setUser] = useState({
+    name: '',
+    surname: '',
+  });
+
+  // Получаем данные пользователя из localStorage
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser)); // Сохраняем данные пользователя в state
+    }
+  }, []);
+
+  // Логика для выхода из системы
+  const handleLogout = () => {
+    localStorage.removeItem('authToken'); 
+    localStorage.removeItem('user'); 
+    navigate('/login');
+  };
 
   return (
     <aside className="sidebar">
@@ -105,10 +124,7 @@ const Sidebar = () => {
           </Link>
         </li>
         <li>
-          <Link
-            to="/chiqish"
-            className={location.pathname === "/chiqish" ? "active-link" : ""}
-          >
+          <Link onClick={handleLogout}>
             <span className="material-symbols-outlined"> logout </span>
             Chiqish
           </Link>
@@ -116,9 +132,9 @@ const Sidebar = () => {
       </ul>
       <div className="user-account">
         <div className="user-profile">
-          <img src="/images/profile-img.png" alt="Mohigul K" />
+          <img src="/images/profile-img.png" alt={`${user.name} ${user.surname}`} />
           <div className="user-detail">
-            <h3>Mohigul K</h3>
+            <h3>{user.name} {user.surname}</h3> {/* Динамическое отображение имени и фамилии */}
             <span>Project Manager</span>
           </div>
         </div>
