@@ -135,7 +135,7 @@ const Sidebar = () => {
           <img src="/images/profile-img.png" alt={`${user.name} ${user.surname}`} />
           <div className="user-detail">
             <h3>{user.name} {user.surname}</h3> {/* Динамическое отображение имени и фамилии */}
-            <span>Project Manager</span>
+            <span>{user.department}/{user.role}</span>
           </div>
         </div>
       </div>
