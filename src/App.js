@@ -5,36 +5,29 @@ import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard';
 import Analytics from './pages/Analytics';
 import Login from './pages/Login';
+import NotFound from './pages/NotFound';
 
-// Компонент для защиты маршрутов
-const PrivateRoute = ({ element }) => {
-  const isAuthenticated = localStorage.getItem('authToken'); // Проверяем токен
-
-  return isAuthenticated ? element : <Navigate to="/login" />;
-};
-
-// Layout с проверкой пути
 const Layout = () => {
-  const location = useLocation(); // Получаем текущий маршрут
+  const location = useLocation();
+  const isLoggedIn = localStorage.getItem('authToken'); // Проверяем, есть ли токен
 
   return (
     <div className="app">
-      {/* Показываем Sidebar, если мы не на странице логина */}
-      {location.pathname !== '/login' && <Sidebar />}
-      
+      {/* Показываем сайдбар только если пользователь залогинен и не на странице логина или 404 */}
+      {isLoggedIn && location.pathname !== '/login' && location.pathname !== '/404' && <Sidebar />}
       <div className="content">
         <Routes>
-          {/* Защищенные маршруты */}
-          <Route path="/" element={<PrivateRoute element={<Dashboard />} />} />
-          <Route path="/analytics" element={<PrivateRoute element={<Analytics />} />} />
-          <Route path="/login" element={<Login />} /> {/* Страница логина */}
+          {/* Приватные маршруты */}
+          <Route path="/" element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />} />
+          <Route path="/analytics" element={isLoggedIn ? <Analytics /> : <Navigate to="/login" />} />
+          <Route path="/login" element={!isLoggedIn ? <Login /> : <Navigate to="/" />} /> {/* Перенаправляем на /, если уже авторизован */}
+          <Route path="*" element={<NotFound />} /> {/* Страница 404 */}
         </Routes>
       </div>
     </div>
   );
 };
 
-// Основной компонент App
 const App = () => {
   return (
     <Router>

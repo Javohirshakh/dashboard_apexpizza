@@ -1,3 +1,69 @@
-.content{
+
+/* App.css */
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background-color: #f0f4ff;
+}
+
+.app {
+  display: flex;
+  height: 100vh;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
   padding-left: 80px!important;
+  background-color: #f0f4ff;
+}
+
+/* Стиль для 404 страницы */
+.not-found-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: #161a2d;
+}
+
+.not-found-container h1 {
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.not-found-container p {
+  font-size: 1.25rem;
+  color: #5a5a5a;
+}
+
+.not-found-container a {
+  color: #4f52ba;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.not-found-container a:hover {
+  color: #161a2d;
+}
+
+/* Адаптивный дизайн */
+@media (max-width: 768px) {
+  .app {
+    flex-direction: column;
+  }
+
+  .content {
+    padding: 10px;
+  }
+
+  .not-found-container h1 {
+    font-size: 2rem;
+  }
+
+  .not-found-container p {
+    font-size: 1rem;
+  }
 }
