@@ -5,9 +5,9 @@ import './NotFound.css'; // Не забудьте добавить стили, �
 const NotFound = () => {
   return (
     <div className="not-found-container">
-      <h1>404 - Page Not Found</h1>
-      <p>The page you're looking for does not exist.</p>
-      <Link to="/login">Go to Login</Link>
+      <h1>404 - Sahifa topilmadi :(</h1>
+      <p>Bunday sahifa mavjud emas.</p>
+      <Link to="/login">Bosh sahifa</Link>
     </div>
   );
 };

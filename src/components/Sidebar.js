@@ -21,9 +21,9 @@ const Sidebar = () => {
 
   // Логика для выхода из системы
   const handleLogout = () => {
-    localStorage.removeItem('authToken'); 
-    localStorage.removeItem('user'); 
-    navigate('/login');
+    localStorage.removeItem('authToken'); // Удаляем токен аутентификации
+    localStorage.removeItem('user'); // Удаляем данные пользователя
+    navigate('/login'); // Перенаправляем на страницу логина после логаута
   };
 
   return (
@@ -107,8 +107,8 @@ const Sidebar = () => {
         </h4>
         <li>
           <Link
-            to="/profil"
-            className={location.pathname === "/profil" ? "active-link" : ""}
+            to="/profile"
+            className={location.pathname === "/profile" ? "active-link" : ""}
           >
             <span className="material-symbols-outlined"> account_circle </span>
             Profil

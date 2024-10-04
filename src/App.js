@@ -4,12 +4,13 @@ import './App.css';
 import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard';
 import Analytics from './pages/Analytics';
+import Profile from './pages/Profile';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 
 const Layout = () => {
   const location = useLocation();
-  const isLoggedIn = localStorage.getItem('authToken'); // Проверяем, есть ли токен
+  const isLoggedIn = localStorage.getItem('authToken'); // Проверка авторизации
 
   return (
     <div className="app">
@@ -20,8 +21,13 @@ const Layout = () => {
           {/* Приватные маршруты */}
           <Route path="/" element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />} />
           <Route path="/analytics" element={isLoggedIn ? <Analytics /> : <Navigate to="/login" />} />
-          <Route path="/login" element={!isLoggedIn ? <Login /> : <Navigate to="/" />} /> {/* Перенаправляем на /, если уже авторизован */}
-          <Route path="*" element={<NotFound />} /> {/* Страница 404 */}
+          <Route path="/profile" element={isLoggedIn ? <Profile /> : <Navigate to="/login" />} />
+          
+          {/* Если пользователь уже залогинился, не показывать страницу логина */}
+          <Route path="/login" element={!isLoggedIn ? <Login /> : <Navigate to="/" />} /> 
+          
+          {/* 404 Page */}
+          <Route path="*" element={<NotFound />} /> {/* Для всех остальных несуществующих страниц */}
         </Routes>
       </div>
     </div>
@@ -34,6 +40,6 @@ const App = () => {
       <Layout />
     </Router>
   );
-};
+}
 
 export default App;
