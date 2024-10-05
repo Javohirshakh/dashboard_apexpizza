@@ -43,6 +43,7 @@ const Profile = () => {
   const handleSave = async () => {
     setIsSaving(true);
     try {
+      // eslint-disable-next-line no-unused-vars
       const response = await fetch('https://script.google.com/macros/s/AKfycbxxmY763Vsd0xeXKxxcF02561m5W_0pLoUr2WfbYDo-ZD53mheNVhC8Fu8t0SImHgds/exec?route=updateUser', {
         method: 'POST',
         mode: 'no-cors', // Включаем no-cors
@@ -53,7 +54,7 @@ const Profile = () => {
       });
   
       // Мы не сможем обработать результат, так как режим no-cors скрывает ответ
-      console.log("Запрос был отправлен", response);
+      console.log("Запрос был отправлен");
   
       // Обновляем интерфейс: показываем сообщение и отключаем режим редактирования
       setSaveSuccess(true); 
