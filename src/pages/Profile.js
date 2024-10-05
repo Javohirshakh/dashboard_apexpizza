@@ -10,6 +10,9 @@ const Profile = () => {
     profilePhoto: ''
   });
   const [editMode, setEditMode] = useState(false);
+  const [isSaving, setIsSaving] = useState(false); // Для состояния загрузки
+  const [saveSuccess, setSaveSuccess] = useState(false); // Для уведомления об успешном сохранении
+
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem('user'));
@@ -36,11 +39,63 @@ const Profile = () => {
     });
   };
 
-  const handleSave = () => {
-    localStorage.setItem('user', JSON.stringify(profile));
-    setEditMode(false);
-  };
 
+  const handleSave = async () => {
+    setIsSaving(true);
+    try {
+      const response = await fetch('https://script.google.com/macros/s/AKfycbxxmY763Vsd0xeXKxxcF02561m5W_0pLoUr2WfbYDo-ZD53mheNVhC8Fu8t0SImHgds/exec?route=updateUser', {
+        method: 'POST',
+        mode: 'no-cors', // Включаем no-cors
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(profile),
+      });
+  
+      // Мы не сможем обработать результат, так как режим no-cors скрывает ответ
+      console.log("Запрос был отправлен", response);
+  
+      // Обновляем интерфейс: показываем сообщение и отключаем режим редактирования
+      setSaveSuccess(true); 
+      setEditMode(false);
+  
+      // Получаем актуальные данные о пользователе
+      await fetchAndUpdateUser(); 
+  
+    } catch (error) {
+      console.error('Ошибка:', error);
+    } finally {
+      setIsSaving(false);
+      setTimeout(() => setSaveSuccess(false), 3000);
+    }
+  };
+  
+  // Функция для обновления localStorage и состояния после сохранения
+  const fetchAndUpdateUser = async () => {
+    try {
+      const userListResponse = await fetch('https://script.google.com/macros/s/AKfycbxxmY763Vsd0xeXKxxcF02561m5W_0pLoUr2WfbYDo-ZD53mheNVhC8Fu8t0SImHgds/exec?route=users');
+      const users = await userListResponse.json();
+  
+      const storedUser = JSON.parse(localStorage.getItem('user'));
+      const phone = storedUser.phone;
+  
+      const updatedUser = users.find(user => user.phone === phone);
+  
+      if (updatedUser) {
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+        setProfile(updatedUser); // Обновляем профиль в состоянии компонента
+      }
+    } catch (error) {
+      console.error('Ошибка обновления данных пользователя:', error);
+    }
+  };
+  
+  
+  
+  
+  
+
+  
   const triggerFileUpload = () => {
     document.getElementById('photo-upload').click();
   };
@@ -92,10 +147,21 @@ const Profile = () => {
           <h3>Bo'lim: {profile.department}</h3>
 
           {editMode ? (
-            <button className="save-btn" onClick={handleSave}>Saqlash</button>
-          ) : (
-            <button className="edit-btn" onClick={() => setEditMode(true)}>Tahrirlash</button>
-          )}
+  <button className="save-btn" onClick={handleSave} disabled={isSaving}>
+    {isSaving ? 'Saqlanmoqda...' : 'Saqlash'}
+  </button>
+) : (
+  <button className="edit-btn" onClick={() => setEditMode(true)}>Tahrirlash</button>
+)}
+
+{/* Уведомление об успешном сохранении */}
+{saveSuccess && (
+  <div className="notification-success">
+    Ma'lumotlar saqlandi!
+  </div>
+)}
+
+
         </div>
       </div>
     </div>

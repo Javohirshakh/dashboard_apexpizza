@@ -14,7 +14,7 @@ const Login = () => {
     setIsLoading(true); // Включаем лоадинг на кнопке
 
     // Отправляем запрос к API для получения данных пользователей
-    const response = await fetch('https://script.google.com/macros/s/AKfycbzaes8hxrlWUiY6o_IPUP_E2yIdS3QRz3YgCf_gdF9fMJTeIytHhn-2fmqghIdR1wju/exec?route=users');
+    const response = await fetch('https://script.google.com/macros/s/AKfycbxxmY763Vsd0xeXKxxcF02561m5W_0pLoUr2WfbYDo-ZD53mheNVhC8Fu8t0SImHgds/exec?route=users');
     const users = await response.json();
 
     // Ищем пользователя с введённым телефоном и паролем
@@ -29,7 +29,7 @@ const Login = () => {
         setIsLoading(false);
         navigate('/'); // Перенаправляем на Dashboard
       } else {
-        setError('Invalid phone number or password');
+        setError('Telefon yoki parol xato!');
         setIsLoading(false);
       }
     }, 1500); // Симуляция времени ответа
