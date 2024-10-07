@@ -1,30 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import "./Sidebar.css";
+// src/components/Sidebar.js
+import React, { useContext } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import './Sidebar.css';
+import { UserContext } from '../context/UserContext';
 
 const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useContext(UserContext);
 
-  const [user, setUser] = useState({
-    name: '',
-    surname: '',
-  });
-
-  // Получаем данные пользователя из localStorage
-  useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser)); // Сохраняем данные пользователя в state
-    }
-  }, []);
-
-  // Логика для выхода из системы
   const handleLogout = () => {
-    localStorage.removeItem('authToken'); // Удаляем токен аутентификации
-    localStorage.removeItem('user'); // Удаляем данные пользователя
-    navigate('/login'); // Перенаправляем на страницу логина после логаута
+    // localStorage.setItem('user', 'null')
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('user');
+    navigate('/login');
   };
+
+  const displayProfilePhoto = user?.profilePhoto
+    ? user.profilePhoto
+    : '/images/profile-img.png';
 
   return (
     <aside className="sidebar">
@@ -38,28 +32,19 @@ const Sidebar = () => {
           <div className="menu-separator"></div>
         </h4>
         <li>
-          <Link
-            to="/"
-            className={location.pathname === "/" ? "active-link" : ""}
-          >
+          <Link to="/" className={location.pathname === "/" ? "active-link" : ""}>
             <span className="material-symbols-outlined"> dashboard </span>
             Dashboard
           </Link>
         </li>
         <li>
-          <Link
-            to="/asosiy"
-            className={location.pathname === "/asosiy" ? "active-link" : ""}
-          >
+          <Link to="/asosiy" className={location.pathname === "/asosiy" ? "active-link" : ""}>
             <span className="material-symbols-outlined"> overview </span>
             Asosiy
           </Link>
         </li>
         <li>
-          <Link
-            to="/analytics"
-            className={location.pathname === "/analytics" ? "active-link" : ""}
-          >
+          <Link to="/analytics" className={location.pathname === "/analytics" ? "active-link" : ""}>
             <span className="material-symbols-outlined"> monitoring </span>
             Analitika
           </Link>
@@ -69,35 +54,20 @@ const Sidebar = () => {
           <div className="menu-separator"></div>
         </h4>
         <li>
-          <Link
-            to="/proektlar"
-            className={location.pathname === "/proektlar" ? "active-link" : ""}
-          >
+          <Link to="/proektlar" className={location.pathname === "/proektlar" ? "active-link" : ""}>
             <span className="material-symbols-outlined"> folder </span>
             Proektlar
           </Link>
         </li>
         <li>
-          <Link
-            to="/barcha-hisobotlar"
-            className={
-              location.pathname === "/barcha-hisobotlar" ? "active-link" : ""
-            }
-          >
+          <Link to="/barcha-hisobotlar" className={location.pathname === "/barcha-hisobotlar" ? "active-link" : ""}>
             <span className="material-symbols-outlined"> flag </span>
             Barcha hisobotlar
           </Link>
         </li>
         <li>
-          <Link
-            to="/bildirishnomalar"
-            className={
-              location.pathname === "/bildirishnomalar" ? "active-link" : ""
-            }
-          >
-            <span className="material-symbols-outlined">
-              notifications_active
-            </span>
+          <Link to="/bildirishnomalar" className={location.pathname === "/bildirishnomalar" ? "active-link" : ""}>
+            <span className="material-symbols-outlined"> notifications_active </span>
             Bildirishnomalar
           </Link>
         </li>
@@ -106,19 +76,13 @@ const Sidebar = () => {
           <div className="menu-separator"></div>
         </h4>
         <li>
-          <Link
-            to="/profile"
-            className={location.pathname === "/profile" ? "active-link" : ""}
-          >
+          <Link to="/profile" className={location.pathname === "/profile" ? "active-link" : ""}>
             <span className="material-symbols-outlined"> account_circle </span>
             Profil
           </Link>
         </li>
         <li>
-          <Link
-            to="/sozlamalar"
-            className={location.pathname === "/sozlamalar" ? "active-link" : ""}
-          >
+          <Link to="/sozlamalar" className={location.pathname === "/sozlamalar" ? "active-link" : ""}>
             <span className="material-symbols-outlined"> settings </span>
             Sozlamalar
           </Link>
@@ -132,10 +96,10 @@ const Sidebar = () => {
       </ul>
       <div className="user-account">
         <div className="user-profile">
-          <img src="/images/profile-img.png" alt={`${user.name} ${user.surname}`} />
+          <img src={displayProfilePhoto} alt={`${user?.name} ${user?.surname}`} onError={(e) => { e.target.src = '/images/profile-img.png'; }} />
           <div className="user-detail">
-            <h3>{user.name} {user.surname}</h3> {/* Динамическое отображение имени и фамилии */}
-            <span>{user.department}/{user.role}</span>
+            <h3>{user?.name} {user?.surname}</h3>
+            <span>{user?.department}/{user?.role}</span>
           </div>
         </div>
       </div>

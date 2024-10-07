@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from 'react';
+// src/pages/Profile.js
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import AvatarEditor from 'react-avatar-editor';
 import './Profile.css';
+import { UserContext } from '../context/UserContext';
 
 const Profile = () => {
+  const { user, setUser } = useContext(UserContext);
   const [profile, setProfile] = useState({
     name: '',
     surname: '',
@@ -10,93 +14,85 @@ const Profile = () => {
     profilePhoto: ''
   });
   const [editMode, setEditMode] = useState(false);
-  const [isSaving, setIsSaving] = useState(false); // Для состояния загрузки
-  const [saveSuccess, setSaveSuccess] = useState(false); // Для уведомления об успешном сохранении
-
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
+  const [srcImage, setSrcImage] = useState(null);
+  const [scale, setScale] = useState(1);
+  const editorRef = useRef(null);
 
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem('user'));
-    if (userData) {
-      setProfile(userData);
+    if (user) {
+      setProfile(user);
     }
-  }, []);
+  }, [user]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setProfile({ ...profile, profilePhoto: reader.result });
-    };
     if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSrcImage(reader.result);
+      };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleInputChange = (e) => {
-    setProfile({
-      ...profile,
-      [e.target.name]: e.target.value
-    });
+  const handleCrop = async () => {
+    if (editorRef.current) {
+      const canvas = editorRef.current.getImageScaledToCanvas();
+      const base64Image = canvas.toDataURL('image/jpeg');
+      const updatedProfile = { ...profile, profilePhoto: base64Image };
+
+      setProfile(updatedProfile);
+      setUser(updatedProfile);
+      localStorage.setItem('user', JSON.stringify(updatedProfile));
+
+      setSrcImage(null);
+
+      setIsSaving(true);
+      try {
+        await fetch('https://script.google.com/macros/s/AKfycbyZyQdnx_73lQ4zVm2WFUf6zD4L1HMWk-0iIPgM5e3hJsTUynIB2vYQ0iLCxLD3qCQ5/exec?route=updateUser', {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updatedProfile),
+        });
+
+        setSaveSuccess(true);
+        setEditMode(false);
+      } catch (error) {
+        console.error('Ошибка при сохранении фото:', error);
+      } finally {
+        setIsSaving(false);
+        setTimeout(() => setSaveSuccess(false), 3000);
+      }
+    }
   };
 
-
-  const handleSave = async () => {
+  const handleSaveProfile = async () => {
     setIsSaving(true);
+
     try {
-      // eslint-disable-next-line no-unused-vars
-      const response = await fetch('https://script.google.com/macros/s/AKfycbxxmY763Vsd0xeXKxxcF02561m5W_0pLoUr2WfbYDo-ZD53mheNVhC8Fu8t0SImHgds/exec?route=updateUser', {
+      setUser(profile);
+      localStorage.setItem('user', JSON.stringify(profile));
+
+      await fetch('https://script.google.com/macros/s/AKfycbyZyQdnx_73lQ4zVm2WFUf6zD4L1HMWk-0iIPgM5e3hJsTUynIB2vYQ0iLCxLD3qCQ5/exec?route=updateUser', {
         method: 'POST',
-        mode: 'no-cors', // Включаем no-cors
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(profile),
       });
-  
-      // Мы не сможем обработать результат, так как режим no-cors скрывает ответ
-      console.log("Запрос был отправлен");
-  
-      // Обновляем интерфейс: показываем сообщение и отключаем режим редактирования
-      setSaveSuccess(true); 
+
+      setSaveSuccess(true);
       setEditMode(false);
-  
-      // Получаем актуальные данные о пользователе
-      await fetchAndUpdateUser(); 
-  
     } catch (error) {
-      console.error('Ошибка:', error);
+      console.error('Ошибка при сохранении данных профиля:', error);
     } finally {
       setIsSaving(false);
       setTimeout(() => setSaveSuccess(false), 3000);
     }
   };
-  
-  // Функция для обновления localStorage и состояния после сохранения
-  const fetchAndUpdateUser = async () => {
-    try {
-      const userListResponse = await fetch('https://script.google.com/macros/s/AKfycbxxmY763Vsd0xeXKxxcF02561m5W_0pLoUr2WfbYDo-ZD53mheNVhC8Fu8t0SImHgds/exec?route=users');
-      const users = await userListResponse.json();
-  
-      const storedUser = JSON.parse(localStorage.getItem('user'));
-      const phone = storedUser.phone;
-  
-      const updatedUser = users.find(user => user.phone === phone);
-  
-      if (updatedUser) {
-        localStorage.setItem('user', JSON.stringify(updatedUser));
-        setProfile(updatedUser); // Обновляем профиль в состоянии компонента
-      }
-    } catch (error) {
-      console.error('Ошибка обновления данных пользователя:', error);
-    }
-  };
-  
-  
-  
-  
-  
 
-  
   const triggerFileUpload = () => {
     document.getElementById('photo-upload').click();
   };
@@ -105,39 +101,37 @@ const Profile = () => {
     <div className="profile-container-wide">
       <div className="profile-header">
         <div className="profile-photo-container-wide" onClick={triggerFileUpload}>
-          <img
-            className="profile-photo-wide"
-            src={profile.profilePhoto || '/images/default-profile.png'}
-            alt="Profile"
-          />
+          <img className="profile-photo-wide" src={profile.profilePhoto || '/images/default-profile.png'} alt="Profile" />
           <div className="profile-photo-hover-wide">
             <span className="material-icons camera-icon-wide">photo_camera</span>
           </div>
-          <input
-            type="file"
-            onChange={handleFileChange}
-            style={{ display: 'none' }}
-            id="photo-upload"
-          />
+          <input type="file" onChange={handleFileChange} style={{ display: 'none' }} id="photo-upload" />
         </div>
+
+        {srcImage && (
+          <div className="editor-modal">
+            <div className="editor-modal-content">
+              <h3>Rasmni tahrirlash</h3>
+              <AvatarEditor ref={editorRef} image={srcImage} width={250} height={250} border={50} borderRadius={125} scale={scale} className="avatar-editor" />
+              <div className="editor-controls">
+                <label>Masshtab:</label>
+                <input type="range" value={scale} min="1" max="3" step="0.1" onChange={(e) => setScale(parseFloat(e.target.value))} className="scale-slider" />
+              </div>
+              <div className="editor-actions">
+                <button className="cancel-btn" onClick={() => setSrcImage(null)}>Bekor qilish</button>
+                <button className="apply-btn" onClick={handleCrop}>Saqlash</button>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="profile-info-wide">
           {editMode ? (
             <div className="profile-info-edit">
               <label>Ism:</label>
-              <input
-                type="text"
-                name="name"
-                value={profile.name}
-                onChange={handleInputChange}
-              />
+              <input type="text" name="name" value={profile.name} onChange={e => setProfile({ ...profile, name: e.target.value })} />
               <label>Familiya:</label>
-              <input
-                type="text"
-                name="surname"
-                value={profile.surname}
-                onChange={handleInputChange}
-              />
+              <input type="text" name="surname" value={profile.surname} onChange={e => setProfile({ ...profile, surname: e.target.value })} />
             </div>
           ) : (
             <div className="profile-info-display">
@@ -148,21 +142,18 @@ const Profile = () => {
           <h3>Bo'lim: {profile.department}</h3>
 
           {editMode ? (
-  <button className="save-btn" onClick={handleSave} disabled={isSaving}>
-    {isSaving ? 'Saqlanmoqda...' : 'Saqlash'}
-  </button>
-) : (
-  <button className="edit-btn" onClick={() => setEditMode(true)}>Tahrirlash</button>
-)}
+            <button className="save-btn" onClick={handleSaveProfile} disabled={isSaving}>
+              {isSaving ? 'Сохранение...' : 'Сохранить'}
+            </button>
+          ) : (
+            <button className="edit-btn" onClick={() => setEditMode(true)}>Tahrirlash</button>
+          )}
 
-{/* Уведомление об успешном сохранении */}
-{saveSuccess && (
-  <div className="notification-success">
-    Ma'lumotlar saqlandi!
-  </div>
-)}
-
-
+          {saveSuccess && (
+            <div className="notification-success">
+              Muvaffaqiyatli saqlandi!
+            </div>
+          )}
         </div>
       </div>
     </div>

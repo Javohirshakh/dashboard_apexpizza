@@ -28,6 +28,7 @@ const Login = () => {
 
         setIsLoading(false);
         navigate('/'); // Перенаправляем на Dashboard
+        window.location.reload(); 
       } else {
         setError('Telefon yoki parol xato!');
         setIsLoading(false);
