@@ -143,7 +143,7 @@ const Profile = () => {
 
           {editMode ? (
             <button className="save-btn" onClick={handleSaveProfile} disabled={isSaving}>
-              {isSaving ? 'Сохранение...' : 'Сохранить'}
+              {isSaving ? 'Saqlanmoqda...' : 'Saqlash'}
             </button>
           ) : (
             <button className="edit-btn" onClick={() => setEditMode(true)}>Tahrirlash</button>
