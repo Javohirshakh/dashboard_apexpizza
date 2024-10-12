@@ -1,0 +1,50 @@
+.complaints-page {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .complaints-title {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 40px;
+  }
+  
+  .complaints-tabs {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+  }
+  
+  .complaints-tab {
+    background-color: #f0f0f0;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    margin: 0 10px;
+    border-radius: 5px;
+    border: 1px solid #161a2d;
+  }
+  
+  .complaints-tab.active {
+    background-color: #161a2d;
+    color: white;
+  }
+  
+  .complaints-content {
+    text-align: center;
+  }
+  
+  .complaints-section {
+    margin-top: 20px;
+  }
+  
+  .complaints-section h2 {
+    font-size: 24px;
+  }
+  
+  .complaints-section p {
+    font-size: 18px;
+  }
+  

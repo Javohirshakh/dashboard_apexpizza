@@ -72,6 +72,22 @@ const Sidebar = () => {
           </Link>
         </li>
         <h4>
+          <span>Instrumentlar</span>
+          <div className="menu-separator"></div>
+        </h4>
+        <li>
+          <Link to="/monitors" className={location.pathname === "/monitors" ? "active-link" : ""}>
+            <span className="material-symbols-outlined"> cast </span>
+            Monitorlar
+          </Link>
+        </li>
+        <li>
+          <Link to="/complaints" className={location.pathname === "/complaints" ? "active-link" : ""}>
+            <span className="material-symbols-outlined"> feedback </span>
+            Shikoyatlar
+          </Link>
+        </li>
+        <h4>
           <span>Akkount</span>
           <div className="menu-separator"></div>
         </h4>

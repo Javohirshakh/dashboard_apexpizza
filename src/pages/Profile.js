@@ -1,5 +1,6 @@
 // src/pages/Profile.js
 import React, { useState, useEffect, useRef, useContext } from 'react';
+import config from '../config';
 import AvatarEditor from 'react-avatar-editor';
 import './Profile.css';
 import { UserContext } from '../context/UserContext';
@@ -51,7 +52,7 @@ const Profile = () => {
 
       setIsSaving(true);
       try {
-        await fetch('https://script.google.com/macros/s/AKfycbyZyQdnx_73lQ4zVm2WFUf6zD4L1HMWk-0iIPgM5e3hJsTUynIB2vYQ0iLCxLD3qCQ5/exec?route=updateUser', {
+        await fetch(`${config.API}?route=updateUser`, {
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
