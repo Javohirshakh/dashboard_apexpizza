@@ -120,7 +120,7 @@ const Complaints = () => {
         {activeSection === 'generalComplaints' && (
           <div className="complaints-section complaints-wrapper">
             {isLoading ? (
-              <div className="loader"></div>
+              <div className="complaints_loader"></div>
             ) : currentComplaints.length > 0 ? (
               <div className="complaints-list">
                 {currentComplaints.map((item, index) => (
