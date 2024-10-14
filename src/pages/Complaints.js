@@ -121,19 +121,20 @@ const Complaints = () => {
           <div className="filter-container">
             <label htmlFor="branchSelect">Filialni tanlang:</label>
             <Select
-              id="branchSelect"
-              options={[
-                { value: 'Hammasi', label: `Hammasi (${complaints.length})` },
-                ...branches.map((branch) => ({
-                  value: branch.branch,
-                  label: `${branch.branch}`,
-                })),
-              ]}
-              value={selectedBranch}
-              onChange={handleBranchChange}
-              styles={customStyles}
-              placeholder="Hamma filiallar"
-            />
+  id="branchSelect"
+  options={[
+    { value: 'Hammasi', label: `Hammasi (${complaints.length})` },
+    ...branches.map((branch) => ({
+      value: branch.branch,
+      label: `${branch.branch} (${complaints.filter((item) => item.branch === branch.branch).length})`,
+    })),
+  ]}
+  value={selectedBranch}
+  onChange={handleBranchChange}
+  styles={customStyles}
+  placeholder="Hamma filiallar"
+/>
+
           </div>
 
           <div className="complaints-content complaints-wrapper">

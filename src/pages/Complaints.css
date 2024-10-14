@@ -91,10 +91,12 @@
   align-items: center;
   gap: 20px;
 }
-.branch-select {
+#branchSelect {
+  z-index: 99;
   margin-top: 10px;
-  width: 100%;
-  max-width: 300px;
+  width: 100%!important;
+  min-width: 300px!important;
+  max-width: 300px!important;
   transform: translateY(-5px);
   margin-right: auto;
 }
