@@ -37,6 +37,19 @@
     text-align: center;
   }
   
+
+  .branches-list ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .branch-item {
+    margin: 10px 0;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
   .complaints-section {
     margin-top: 20px;
   }
@@ -51,10 +64,11 @@
 
 .complaint-item {
   display: flex;
-  margin: 20px 0;
-  padding: 5px;
-  border: 2px solid #161a2d;
-  border-radius: 5px;
+  margin: 10px 0;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
   align-items: center;
 }
 .complaint-item h3 {
@@ -83,13 +97,6 @@
   max-width: 300px;
   transform: translateY(-5px);
   margin-right: auto;
-}
-
-.complaint-item {
-  margin-bottom: 15px;
-  padding: 15px;
-  border-radius: 8px;
-  background-color: #f9f9f9;
 }
 
 .pagination {

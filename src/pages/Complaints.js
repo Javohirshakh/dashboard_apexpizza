@@ -1,3 +1,4 @@
+// src/pages/Complaints.js
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import config from '../config';
@@ -5,39 +6,44 @@ import './Complaints.css';
 
 const Complaints = () => {
   const [activeSection, setActiveSection] = useState('branchComplaints');
+  const [branches, setBranches] = useState([]);
   const [complaints, setComplaints] = useState([]);
   const [filteredComplaints, setFilteredComplaints] = useState([]);
-  const [branches, setBranches] = useState([]);
   const [selectedBranch, setSelectedBranch] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingBranches, setIsLoadingBranches] = useState(true);
+  const [isLoadingComplaints, setIsLoadingComplaints] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const complaintsPerPage = 10;
 
+  // Fetch branches data
+  const fetchBranches = async () => {
+    try {
+      const response = await fetch(`${config.COMPLAINTS}?route=branchs`);
+      const data = await response.json();
+      setBranches(data);
+    } catch (error) {
+      console.error('Ошибка при загрузке филиалов:', error);
+    } finally {
+      setIsLoadingBranches(false);
+    }
+  };
+
+  // Fetch complaints data
   const fetchComplaints = async () => {
     try {
       const response = await fetch(`${config.COMPLAINTS}?route=complaints`);
       const data = await response.json();
       setComplaints(data.reverse());
-
-      const branchesSet = Array.from(new Set(data.map(item => item.branch)));
-      const uniqueBranches = [
-        { value: 'Hammasi', label: `Hammasi (${data.length})` },
-        ...branchesSet.map(branch => ({
-          value: branch,
-          label: `${branch} (${data.filter(item => item.branch === branch).length})`,
-        })),
-      ];
-
-      setBranches(uniqueBranches);
       setFilteredComplaints(data);
     } catch (error) {
       console.error('Ошибка при загрузке жалоб:', error);
     } finally {
-      setIsLoading(false);
+      setIsLoadingComplaints(false);
     }
   };
 
   useEffect(() => {
+    fetchBranches();
     fetchComplaints();
   }, []);
 
@@ -46,9 +52,9 @@ const Complaints = () => {
     setFilteredComplaints(
       selectedOption.value === 'Hammasi'
         ? complaints
-        : complaints.filter(item => item.branch === selectedOption.value)
+        : complaints.filter((item) => item.branch === selectedOption.value)
     );
-    setCurrentPage(1); // Сброс страницы при смене филиала
+    setCurrentPage(1);
   };
 
   const indexOfLastComplaint = currentPage * complaintsPerPage;
@@ -57,7 +63,6 @@ const Complaints = () => {
     indexOfFirstComplaint,
     indexOfLastComplaint
   );
-
   const totalPages = Math.ceil(filteredComplaints.length / complaintsPerPage);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -94,32 +99,45 @@ const Complaints = () => {
         </button>
       </div>
 
-      {activeSection === 'generalComplaints' && (
-        <div className="filter-container">
-          <label htmlFor="branchSelect">Filialni tanlang:</label>
-          <Select
-            id="branchSelect"
-            options={branches}
-            value={selectedBranch}
-            onChange={handleBranchChange}
-            className="branch-select"
-            placeholder="Hamma filiallar"
-            styles={customStyles}
-          />
+      {activeSection === 'branchComplaints' && (
+        <div className="branches-list">
+          {isLoadingBranches ? (
+            <div className="complaints_loader"></div>
+          ) : (
+            <ul>
+              {branches.map((branch, index) => (
+                <li key={index} className="branch-item">
+                  <h3>{branch.branch}</h3>
+                  <p>Base64: {branch.base64}</p>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       )}
 
-      <div className="complaints-content">
-        {activeSection === 'branchComplaints' && (
-          <div className="complaints-section">
-            <h2>Filiallar</h2>
-            <p>Filiallar qo'shish, nazorat qilish, kuzatish.</p>
+      {activeSection === 'generalComplaints' && (
+        <>
+          <div className="filter-container">
+            <label htmlFor="branchSelect">Filialni tanlang:</label>
+            <Select
+              id="branchSelect"
+              options={[
+                { value: 'Hammasi', label: `Hammasi (${complaints.length})` },
+                ...branches.map((branch) => ({
+                  value: branch.branch,
+                  label: `${branch.branch}`,
+                })),
+              ]}
+              value={selectedBranch}
+              onChange={handleBranchChange}
+              styles={customStyles}
+              placeholder="Hamma filiallar"
+            />
           </div>
-        )}
 
-        {activeSection === 'generalComplaints' && (
-          <div className="complaints-section complaints-wrapper">
-            {isLoading ? (
+          <div className="complaints-content complaints-wrapper">
+            {isLoadingComplaints ? (
               <div className="complaints_loader"></div>
             ) : currentComplaints.length > 0 ? (
               <div className="complaints-list">
@@ -145,8 +163,8 @@ const Complaints = () => {
               <p>Shikoyatlar mavjud emas.</p>
             )}
           </div>
-        )}
-      </div>
+        </>
+      )}
     </div>
   );
 };
