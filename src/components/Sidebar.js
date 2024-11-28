@@ -18,7 +18,7 @@ const Sidebar = () => {
 
   const displayProfilePhoto = user?.profilePhoto
     ? user.profilePhoto
-    : '/images/profile-img.png';
+    : '/images/default-profile.png';
 
   return (
     <aside className="sidebar">
@@ -112,7 +112,7 @@ const Sidebar = () => {
       </ul>
       <div className="user-account">
         <div className="user-profile">
-          <img src={displayProfilePhoto} alt={`${user?.name} ${user?.surname}`} onError={(e) => { e.target.src = '/images/profile-img.png'; }} />
+          <img src={displayProfilePhoto} alt={`${user?.name} ${user?.surname}`} onError={(e) => { e.target.src = '/images/default-profile.png'; }} />
           <div className="user-detail">
             <h3>{user?.name} {user?.surname}</h3>
             <span>{user?.department}/{user?.role}</span>

@@ -25,7 +25,7 @@ const Layout = () => {
           <Route path="/" element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />} />
           <Route path="/dashboard" element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />} />
           <Route path="/analytics" element={isLoggedIn ? <Analytics /> : <Navigate to="/login" />} />
-          <Route path="/reports" element={isLoggedIn ? <Reports /> : <Navigate to="/reports" />} />
+          <Route path="/reports" element={isLoggedIn ? <Reports /> : <Navigate to="/login" />} />
           <Route path="/monitors" element={isLoggedIn ? <Monitors /> : <Navigate to="/login" />} />
           <Route path="/complaints" element={isLoggedIn ? <Complaints /> : <Navigate to="/login" />} />
           <Route path="/profile" element={isLoggedIn ? <Profile /> : <Navigate to="/login" />} />
