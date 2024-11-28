@@ -60,7 +60,7 @@ const Sidebar = () => {
           </Link>
         </li>
         <li>
-          <Link to="/barcha-hisobotlar" className={location.pathname === "/barcha-hisobotlar" ? "active-link" : ""}>
+          <Link to="/reports" className={location.pathname === "/reports" ? "active-link" : ""}>
             <span className="material-symbols-outlined"> flag </span>
             Barcha hisobotlar
           </Link>
