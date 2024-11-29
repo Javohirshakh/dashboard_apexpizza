@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 
 const Reports = () => {
   const reports = [
-    { title: 'HR', description: 'Отчеты отдела HR', icon: 'group', link: '/hr-reports' },
+    { title: 'HR', description: 'Отчеты отдела HR', icon: 'group', link: '/hr-reports' }, 
+    { title: 'Маркетинг', description: 'Отчеты отдела Маркетинга', icon: 'trending_up', link: 'https://lookerstudio.google.com/reporting/ff6ff5f2-fbed-430b-adca-65acca960470' },
     { title: 'Финансы', description: 'Отчеты отдела Финансов', icon: 'attach_money', link: '/finance-reports' },
     { title: 'Курьеры', description: 'Отчеты Курьерской службы', icon: 'local_shipping', link: 'https://lookerstudio.google.com/reporting/b57320b7-5740-4d0e-992c-6a815c79e1e1/page/VXTUE?s=oXJ5xxKlon8' },
     { title: 'Безопасность', description: 'Отчеты отдела Безопасности', icon: 'security', link: '/security-reports' },

@@ -50,7 +50,7 @@
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
   }
   .report-card.modern-report-card:hover .element{
-    transform: scale(2.2);
+    transform: scale(3);
   }
   /* Иконки */
   .icon-container {
