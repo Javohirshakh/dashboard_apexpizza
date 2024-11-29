@@ -32,7 +32,7 @@ const Sidebar = () => {
           <div className="menu-separator"></div>
         </h4>
         <li>
-          <Link to="/" className={location.pathname === "/" ? "active-link" : ""}>
+          <Link to="/dashboard" className={location.pathname === "/dashboard" ? "active-link" : ""}>
             <span className="material-symbols-outlined"> dashboard </span>
             Dashboard
           </Link>
@@ -60,7 +60,7 @@ const Sidebar = () => {
           </Link>
         </li>
         <li>
-          <Link to="/reports" className={location.pathname === "/reports" ? "active-link" : ""}>
+          <Link to="/reports" className={location.pathname === "/reports" || location.pathname === "/" ? "active-link" : ""}>
             <span className="material-symbols-outlined"> flag </span>
             Barcha hisobotlar
           </Link>
