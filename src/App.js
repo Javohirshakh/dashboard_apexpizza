@@ -22,7 +22,7 @@ const Layout = () => {
       {isLoggedIn && location.pathname !== '/login' && location.pathname !== '/404' && <Sidebar />}
       <div className="content">
         <Routes>
-          <Route path="/" element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />} />
+          <Route path="/" element={isLoggedIn ? <Reports /> : <Navigate to="/login" />} />
           <Route path="/dashboard" element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />} />
           <Route path="/analytics" element={isLoggedIn ? <Analytics /> : <Navigate to="/login" />} />
           <Route path="/reports" element={isLoggedIn ? <Reports /> : <Navigate to="/login" />} />
